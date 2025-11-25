@@ -1,0 +1,162 @@
+{
+  "name": "md-to-pdf-blazing",
+  "displayName": "MD to PDF - Blazing Fast",
+  "description": "Convert Markdown to PDF instantly with a single click. GitHub-style formatting with syntax highlighting.",
+  "version": "1.0.0",
+  "publisher": "good-code-solutions",
+  "author": {
+    "name": "Shanawaaz Mohammed"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/good-code-solutions/vscode-md-to-pdf"
+  },
+  "bugs": {
+    "url": "https://github.com/good-code-solutions/vscode-md-to-pdf/issues"
+  },
+  "homepage": "https://github.com/good-code-solutions/vscode-md-to-pdf#readme",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other",
+    "Formatters"
+  ],
+  "keywords": [
+    "markdown",
+    "pdf",
+    "export",
+    "convert",
+    "md",
+    "document",
+    "print"
+  ],
+  "galleryBanner": {
+    "color": "#1e1e1e",
+    "theme": "dark"
+  },
+  "activationEvents": [
+    "onLanguage:markdown"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "md-to-pdf.convert",
+        "title": "MD to PDF: Convert to PDF",
+        "icon": "$(file-pdf)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "when": "resourceLangId == markdown",
+          "command": "md-to-pdf.convert",
+          "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "when": "resourceLangId == markdown",
+          "command": "md-to-pdf.convert",
+          "group": "1_modification"
+        }
+      ],
+      "explorer/context": [
+        {
+          "when": "resourceExtname == .md",
+          "command": "md-to-pdf.convert",
+          "group": "1_modification"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "md-to-pdf.convert",
+        "key": "ctrl+alt+p",
+        "mac": "cmd+alt+p",
+        "when": "resourceLangId == markdown"
+      }
+    ],
+    "configuration": {
+      "title": "MD to PDF",
+      "properties": {
+        "md-to-pdf.openAfterConversion": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically open the PDF after conversion"
+        },
+        "md-to-pdf.pageFormat": {
+          "type": "string",
+          "default": "A4",
+          "enum": [
+            "A4",
+            "Letter",
+            "Legal",
+            "A3",
+            "A5"
+          ],
+          "enumDescriptions": [
+            "A4 (210mm × 297mm)",
+            "Letter (8.5\" × 11\")",
+            "Legal (8.5\" × 14\")",
+            "A3 (297mm × 420mm)",
+            "A5 (148mm × 210mm)"
+          ],
+          "description": "PDF page format"
+        },
+        "md-to-pdf.margins": {
+          "type": "object",
+          "default": {
+            "top": "15mm",
+            "right": "15mm",
+            "bottom": "15mm",
+            "left": "15mm"
+          },
+          "properties": {
+            "top": {
+              "type": "string",
+              "description": "Top margin (e.g., '15mm', '0.5in')"
+            },
+            "right": {
+              "type": "string",
+              "description": "Right margin"
+            },
+            "bottom": {
+              "type": "string",
+              "description": "Bottom margin"
+            },
+            "left": {
+              "type": "string",
+              "description": "Left margin"
+            }
+          },
+          "description": "Page margins for the PDF"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "build": "esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --minify",
+    "watch": "esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --watch",
+    "compile": "tsc -p ./",
+    "lint": "eslint src --ext ts",
+    "package": "vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "esbuild": "^0.24.0",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.0"
+  },
+  "dependencies": {
+    "markdown-it": "^14.0.0",
+    "markdown-it-highlightjs": "^4.0.1",
+    "puppeteer-core": "^23.0.0"
+  }
+}

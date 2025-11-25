@@ -1,0 +1,28 @@
+# Development files
+.vscode/**
+.vscode-test/**
+src/**
+node_modules/**
+
+# Config files
+.gitignore
+.eslintrc.json
+tsconfig.json
+*.md
+!README.md
+
+# Build artifacts
+**/*.map
+**/*.ts
+!out/**
+
+# Test files
+**/test/**
+**/*.test.js
+
+# Sample files
+sample.*
+tiered-update-architecture.*
+
+# Package files
+*.vsix
