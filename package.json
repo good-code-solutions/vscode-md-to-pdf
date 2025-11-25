@@ -4,6 +4,7 @@
   "description": "Convert Markdown to PDF instantly with a single click. GitHub-style formatting with syntax highlighting.",
   "version": "1.0.0",
   "publisher": "good-code-solutions",
+  "icon": "icon.png",
   "author": {
     "name": "Shanawaaz Mohammed"
   },
@@ -146,6 +147,7 @@
     "package": "vsce package --no-dependencies"
   },
   "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
     "@types/node": "^20.10.0",
     "@types/vscode": "^1.85.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
@@ -155,8 +157,9 @@
     "typescript": "^5.3.0"
   },
   "dependencies": {
+    "@types/highlight.js": "^9.12.4",
+    "highlight.js": "^11.11.1",
     "markdown-it": "^14.0.0",
-    "markdown-it-highlightjs": "^4.0.1",
     "puppeteer-core": "^23.0.0"
   }
 }

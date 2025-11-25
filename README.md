@@ -1,7 +1,7 @@
 # MD to PDF - Blazing Fast ⚡
 
-[![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/your-publisher.md-to-pdf-blazing)](https://marketplace.visualstudio.com/items?itemName=your-publisher.md-to-pdf-blazing)
-[![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/your-publisher.md-to-pdf-blazing)](https://marketplace.visualstudio.com/items?itemName=your-publisher.md-to-pdf-blazing)
+[![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/good-code-solutions.md-to-pdf-blazing)](https://marketplace.visualstudio.com/items?itemName=good-code-solutions.md-to-pdf-blazing)
+[![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/good-code-solutions.md-to-pdf-blazing)](https://marketplace.visualstudio.com/items?itemName=good-code-solutions.md-to-pdf-blazing)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Convert Markdown to PDF instantly with a single click. Beautiful GitHub-style formatting with syntax highlighting.
@@ -17,8 +17,11 @@ Convert Markdown to PDF instantly with a single click. Beautiful GitHub-style fo
 
 ## 📸 Screenshots
 
-<!-- Add screenshots here -->
-<!-- ![Demo](images/demo.gif) -->
+### Preview
+![Feature Preview](images/demo-preview.png)
+
+*See [examples/feature-showcase.md](examples/feature-showcase.md) for the source file.*
+
 
 ## 🚀 Usage
 

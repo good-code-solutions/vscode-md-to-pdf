@@ -4,6 +4,45 @@
 
 import * as path from 'path';
 import type MarkdownIt from 'markdown-it';
+import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
+import typescript from 'highlight.js/lib/languages/typescript';
+import python from 'highlight.js/lib/languages/python';
+import java from 'highlight.js/lib/languages/java';
+import c from 'highlight.js/lib/languages/c';
+import cpp from 'highlight.js/lib/languages/cpp';
+import csharp from 'highlight.js/lib/languages/csharp';
+import go from 'highlight.js/lib/languages/go';
+import rust from 'highlight.js/lib/languages/rust';
+import xml from 'highlight.js/lib/languages/xml';
+import css from 'highlight.js/lib/languages/css';
+import json from 'highlight.js/lib/languages/json';
+import bash from 'highlight.js/lib/languages/bash';
+import shell from 'highlight.js/lib/languages/shell';
+import yaml from 'highlight.js/lib/languages/yaml';
+import sql from 'highlight.js/lib/languages/sql';
+import ini from 'highlight.js/lib/languages/ini';
+import markdown from 'highlight.js/lib/languages/markdown';
+
+// Register languages
+hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('typescript', typescript);
+hljs.registerLanguage('python', python);
+hljs.registerLanguage('java', java);
+hljs.registerLanguage('c', c);
+hljs.registerLanguage('cpp', cpp);
+hljs.registerLanguage('csharp', csharp);
+hljs.registerLanguage('go', go);
+hljs.registerLanguage('rust', rust);
+hljs.registerLanguage('xml', xml);
+hljs.registerLanguage('css', css);
+hljs.registerLanguage('json', json);
+hljs.registerLanguage('bash', bash);
+hljs.registerLanguage('shell', shell);
+hljs.registerLanguage('yaml', yaml);
+hljs.registerLanguage('sql', sql);
+hljs.registerLanguage('ini', ini);
+hljs.registerLanguage('markdown', markdown);
 
 let mdInstance: MarkdownIt | null = null;
 
@@ -16,14 +55,24 @@ export function getMarkdownParser(): MarkdownIt {
   }
 
   const MarkdownIt = require('markdown-it');
-  const highlightjs = require('markdown-it-highlightjs');
 
   mdInstance = new MarkdownIt({
     html: true,
     linkify: true,
     typographer: true,
     breaks: false,
-  }).use(highlightjs, { auto: true, code: true, inline: true });
+    highlight: function (str: string, lang: string): string {
+      if (lang && hljs.getLanguage(lang)) {
+        try {
+          return '<pre class="hljs"><code>' +
+            hljs.highlight(str, { language: lang, ignoreIllegals: true }).value +
+            '</code></pre>';
+        } catch (__) { }
+      }
+
+      return '<pre class="hljs"><code>' + mdInstance!.utils.escapeHtml(str) + '</code></pre>';
+    }
+  });
 
   // Add task list support
   addTaskListPlugin(mdInstance);
@@ -37,11 +86,11 @@ export function getMarkdownParser(): MarkdownIt {
 function addTaskListPlugin(md: MarkdownIt): void {
   const originalRule =
     md.renderer.rules.list_item_open ||
-    function (tokens, idx, options, _env, self) {
+    function (tokens: any[], idx: number, options: any, _env: any, self: any) {
       return self.renderToken(tokens, idx, options);
     };
 
-  md.renderer.rules.list_item_open = function (tokens, idx, options, env, self) {
+  md.renderer.rules.list_item_open = function (tokens: any[], idx: number, options: any, env: any, self: any) {
     const token = tokens[idx];
     const nextToken = tokens[idx + 2];
 
