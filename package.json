@@ -2,7 +2,7 @@
   "name": "md-to-pdf-blazing",
   "displayName": "MD to PDF - Blazing Fast",
   "description": "Convert Markdown to PDF instantly with a single click. GitHub-style formatting with syntax highlighting.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "good-code-solutions",
   "icon": "icon.png",
   "author": {
