@@ -14,6 +14,8 @@ Convert Markdown to PDF instantly with a single click. Beautiful GitHub-style fo
 - **🖱️ One-Click** — Convert from title bar, context menu, or status bar
 - **⌨️ Keyboard Shortcut** — `Cmd+Alt+P` (Mac) / `Ctrl+Alt+P` (Windows/Linux)
 - **⚙️ Configurable** — Page format, margins, and more
+- **👀 PDF Viewer** — View generated PDFs directly in VS Code
+- **🔄 Smart Overwrite** — Choose to overwrite or create new files with sequence numbers
 
 ## 📸 Screenshots
 
@@ -44,6 +46,8 @@ Press `Cmd+Alt+P` (Mac) or `Ctrl+Alt+P` (Windows/Linux) while editing a Markdown
 | `md-to-pdf.openAfterConversion` | `true` | Automatically open PDF after conversion |
 | `md-to-pdf.pageFormat` | `"A4"` | Page format: A4, Letter, Legal, A3, A5 |
 | `md-to-pdf.margins` | `{...}` | Page margins (top, right, bottom, left) |
+| `md-to-pdf.onFileExists` | `"overwrite"` | Behavior when file exists: `overwrite` or `newFile` |
+| `md-to-pdf.viewer` | `"internal"` | Viewer to use: `system` (default app) or `internal` (VS Code) |
 
 ### Example Configuration
 
@@ -56,7 +60,9 @@ Press `Cmd+Alt+P` (Mac) or `Ctrl+Alt+P` (Windows/Linux) while editing a Markdown
     "right": "20mm",
     "bottom": "20mm",
     "left": "20mm"
-  }
+  },
+  "md-to-pdf.onFileExists": "newFile",
+  "md-to-pdf.viewer": "internal"
 }
 ```
 

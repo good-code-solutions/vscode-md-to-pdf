@@ -2,7 +2,7 @@
   "name": "md-to-pdf-blazing",
   "displayName": "MD to PDF - Blazing Fast",
   "description": "Convert Markdown to PDF instantly with a single click. GitHub-style formatting with syntax highlighting.",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "publisher": "good-code-solutions",
   "icon": "icon.png",
   "author": {
@@ -134,12 +134,51 @@
             }
           },
           "description": "Page margins for the PDF"
+        },
+        "md-to-pdf.onFileExists": {
+          "type": "string",
+          "default": "overwrite",
+          "enum": [
+            "overwrite",
+            "newFile"
+          ],
+          "enumDescriptions": [
+            "Overwrite the existing file",
+            "Create a new file with a sequence number (e.g. file-1.pdf)"
+          ],
+          "description": "Behavior when the output file already exists"
+        },
+        "md-to-pdf.viewer": {
+          "type": "string",
+          "default": "internal",
+          "enum": [
+            "system",
+            "internal"
+          ],
+          "enumDescriptions": [
+            "Open in default system application",
+            "Open in VS Code internal viewer"
+          ],
+          "description": "Viewer to use when opening the generated PDF"
         }
       }
-    }
+    },
+    "customEditors": [
+      {
+        "viewType": "md-to-pdf.viewer",
+        "displayName": "MD to PDF Viewer",
+        "selector": [
+          {
+            "filenamePattern": "*.pdf"
+          }
+        ],
+        "priority": "default"
+      }
+    ]
   },
   "scripts": {
-    "vscode:prepublish": "npm run build",
+    "vscode:prepublish": "npm run copy-pdfjs && npm run build",
+    "copy-pdfjs": "mkdir -p out/pdfjs && cp node_modules/pdfjs-dist/build/pdf.min.mjs out/pdfjs/ && cp node_modules/pdfjs-dist/build/pdf.worker.min.mjs out/pdfjs/",
     "build": "esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --minify",
     "watch": "esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --watch",
     "compile": "tsc -p ./",
@@ -160,6 +199,7 @@
     "@types/highlight.js": "^9.12.4",
     "highlight.js": "^11.11.1",
     "markdown-it": "^14.0.0",
+    "pdfjs-dist": "^5.4.394",
     "puppeteer-core": "^23.0.0"
   }
 }

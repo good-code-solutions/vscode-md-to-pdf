@@ -13,6 +13,7 @@ import * as fs from 'fs';
 import { PDF_STYLES } from './styles';
 import { getBrowser, closeBrowser } from './browser';
 import { renderMarkdownToHtml } from './markdown';
+import { PdfViewerProvider } from './pdfViewer';
 
 // ============================================
 // Types
@@ -105,9 +106,23 @@ async function convertMarkdownToPdf(uri?: vscode.Uri): Promise<void> {
   const format = config.get<PageFormat>('pageFormat', 'A4');
   const margins = config.get<PdfMargins>('margins', DEFAULT_MARGINS);
   const openAfterConversion = config.get<boolean>('openAfterConversion', true);
+  const onFileExists = config.get<string>('onFileExists', 'overwrite');
+  const viewer = config.get<string>('viewer', 'system');
 
   // Prepare paths
-  const pdfPath = filePath.replace(/\.md$/i, '.pdf');
+  let pdfPath = filePath.replace(/\.md$/i, '.pdf');
+
+  // Handle file existence logic
+  if (fs.existsSync(pdfPath) && onFileExists === 'newFile') {
+    let counter = 1;
+    const dir = path.dirname(pdfPath);
+    const name = path.basename(pdfPath, '.pdf');
+    while (fs.existsSync(pdfPath)) {
+      pdfPath = path.join(dir, `${name}-${counter}.pdf`);
+      counter++;
+    }
+  }
+
   const fileName = path.basename(filePath);
   const basePath = path.dirname(filePath);
   const title = path.basename(filePath, '.md');
@@ -152,11 +167,19 @@ async function convertMarkdownToPdf(uri?: vscode.Uri): Promise<void> {
 
         // Handle user action
         if (action === 'Open PDF') {
-          await vscode.env.openExternal(vscode.Uri.file(pdfPath));
+          if (viewer === 'internal') {
+            await vscode.commands.executeCommand('vscode.openWith', vscode.Uri.file(pdfPath), PdfViewerProvider.viewType);
+          } else {
+            await vscode.env.openExternal(vscode.Uri.file(pdfPath));
+          }
         } else if (action === 'Reveal in Finder') {
           await vscode.commands.executeCommand('revealFileInOS', vscode.Uri.file(pdfPath));
         } else if (openAfterConversion) {
-          await vscode.env.openExternal(vscode.Uri.file(pdfPath));
+          if (viewer === 'internal') {
+            await vscode.commands.executeCommand('vscode.openWith', vscode.Uri.file(pdfPath), PdfViewerProvider.viewType);
+          } else {
+            await vscode.env.openExternal(vscode.Uri.file(pdfPath));
+          }
         }
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
@@ -191,6 +214,9 @@ export function activate(context: vscode.ExtensionContext): void {
   // Register conversion command
   const convertCommand = vscode.commands.registerCommand('md-to-pdf.convert', convertMarkdownToPdf);
   context.subscriptions.push(convertCommand);
+
+  // Register PDF viewer provider
+  context.subscriptions.push(PdfViewerProvider.register(context));
 
   // Create status bar item
   statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
